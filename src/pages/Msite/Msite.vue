@@ -4,7 +4,7 @@
       <section class="msiteHeader">
           <div class="msiteHeaderTop">
               <img class="logo" src="./images/logo.png"/>
-              <div class="headerSearch">
+              <div class="headerSearch" @click="goTo('/search')">
                   <i class="iconfont icon-sousuo"></i>
                   <span>搜索商品, 共xxxxx款好物</span>
               </div>
@@ -100,7 +100,7 @@
 
       </section>
       <!--首页大处理-->
-      <section class="handle">
+      <!-- <section class="handle">
           <ul class="handleList">
               <li class="handleListItem">
                   <img src="https://yanxuan.nosdn.127.net/5243a7191dd4c86b3b28859089273aa8.gif"/>
@@ -143,7 +143,8 @@
                   <span>新品首发</span>
               </li>
           </ul>
-      </section>
+      </section> -->
+      <kingKongModule :hdata="hdata"></kingKongModule>
       <!--首页广告-->
       <section class="ad">
           <img src="https://yanxuan.nosdn.127.net/f4e55920102eef630232f0f34b75cf2e.gif" alt=""/>
@@ -636,7 +637,33 @@
 import Swiper from 'swiper'
 import "swiper/dist/css/swiper.css"
 import BScroll from 'better-scroll'
+import {mapState} from 'vuex'
+import kingKongModule from '../../components/kingKongModule/kingKongModule.vue'
   export default {
+    data(){
+      return {
+        hdata:[]
+      }
+    },
+    components:{
+      kingKongModule
+    },
+    computed:{
+      // ...mapState(['homeData'])
+      ...mapState({
+        haha:state=> state.homeData
+      })
+    },
+    methods:{
+      goTo(path){
+        this.$router.push(path)
+      }
+    },
+    watch:{
+      haha () {
+          this.hdata = this.haha.kingKongModule.kingKongList
+      }
+    },
     mounted(){
       this.$nextTick(() => {
           new Swiper('.swiper-container', {
@@ -646,14 +673,12 @@ import BScroll from 'better-scroll'
               el: '.swiper-pagination',
             },
           })
-          // setTimeout({
-            
-          // },2000)
           new BScroll(this.$refs.msitenav,{
             scrollX: true,
             scrollY: false
           })
         })
+        this.$store.dispatch('getHomeData')
     }
   }
 </script>
@@ -775,28 +800,6 @@ import BScroll from 'better-scroll'
             padding-left px2rem(10px)
 
     //首页大处理
-    .handle
-      width px2rem(750px)
-      height px2rem(341px)
-      //background pink
-      .handleList
-        display flex
-        flex-wrap wrap
-        margin-left px2rem(30px)
-        .handleListItem
-          padding-top px2rem(10px)
-          width 20%
-          height px2rem(156px)
-          font-size px2rem(24px)
-          color #333
-          display flex
-          flex-direction column
-          justify-content center
-          img
-            width: px2rem(110px)
-            height: px2rem(110px)
-          span
-            padding-top px2rem(15px)
     //首页广告
     .ad
       width 100%

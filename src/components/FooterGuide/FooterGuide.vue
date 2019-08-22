@@ -1,5 +1,5 @@
 <template>
-  <footer class="footer_guide border-1px">
+  <footer class="footer_guide border-1px" >
     <a href="javascript:;" class="guide_item" :class="{on:$route.path==='/msite'}" @click="goTo('/msite')">
         <span class="item_icon">
             <i class="iconfont icon-shouye" ></i>
@@ -12,7 +12,7 @@
         </span>
         <span>分类</span>
     </a>
-    <a href="javascript:;" class="guide_item " :class="{on:$route.path==='/shiwu'}" @click="goTo('/shiwu')">
+    <a href="javascript:;" class="guide_item " :class="{on:$route.path===`/shiwu/find/${$route.params.id}`}" @click="goTo('/shiwu')">
         <span class="item_icon">
             <i class="iconfont icon-tupian"></i>
         </span>
