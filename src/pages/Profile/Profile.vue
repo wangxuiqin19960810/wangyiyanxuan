@@ -17,8 +17,8 @@
         <div class="profileImg">
           <img src="//yanxuan.nosdn.127.net/bd139d2c42205f749cd4ab78fa3d6c60.png"/>>
         </div>
-        <div class="profileLogin" @click="go(1)">
-           <div class="tel">
+        <div class="profileLogin" >
+           <div class="tel" @click="go(1)">
             <i class="iconfont icon-shouji101" ></i>
             <p>手机号快捷登录</p>
           </div>
@@ -101,6 +101,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+import { constants } from 'crypto';
   export default {
     data(){
       return {
@@ -111,11 +112,13 @@
       }
     },
     methods: {
+
       goTo(path){
         this.$router.replace(path)
       },
       go(num){
           this.isShow=false
+          console.log(num, 'xxxxxxx')
           this.toggle=num
       },
       show(){
