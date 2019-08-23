@@ -96,11 +96,11 @@
               class="dxyanzheng"
               type="text"
               placeholder="请输入密码"
-              v-model="code"
+              v-model="code2"
               v-validate="{ required: true, regex: /^\d{6}$/ }"
               name="code"
             />
-            <p class="code" v-show=" errors.has('code')">{{errors.first('code')}}</p>
+            <p class="code" v-show=" errors.has('code2')">{{errors.first('code2')}}</p>
           </div>
           <div class="yzlogin">
             <input class="pro" type="text" placeholder="忘记密码"/>
@@ -158,6 +158,7 @@ import { watch } from 'fs';
         toggle:0, //1 手机号登录界面显示  0 邮箱登录界面显示
         phone:'',//手机号
         code:'',//短信验证码
+        code2:'',
         youxiang:'',
         isShowTel:true,
         mima:'',

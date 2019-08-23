@@ -24,8 +24,8 @@
 
             <ul class="list">
               <li class="listItem" v-for="(item,index) in clist" :key="index" @click="addStyle(index)">
-                <img :src="item.bannerUrl">
-                <p>{{item.name}}</p>
+                <img v-lazy="item.bannerUrl" :src="item.bannerUrl">
+                <p style="color:#666;font-size:24px">{{item.name}}</p>
               </li>
             </ul>
           </div>
