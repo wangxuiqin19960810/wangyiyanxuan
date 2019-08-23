@@ -27,7 +27,7 @@
             <p>邮箱帐号登录</p>
           </div>
         </div>
-        <div class="thirdWrap">
+        <div class="thirdWrap" v-show="isShow">
           <ul class="thirdList">
             <li class="thirdItem">
               <i class="iconfont icon-weixin ic" ></i>
@@ -44,8 +44,8 @@
           </ul>
         </div>
     </div>
-    <!--手机号登录界面 -->
-    <div class="phoneLogin" v-show="toggle==1&&!isShow">
+    <!--手机号登录界面1 -->
+    <div class="phoneLogin" v-show="toggle==1&&!isShow&&isShowTel===true">
       <img class="image" src="//yanxuan.nosdn.127.net/bd139d2c42205f749cd4ab78fa3d6c60.png">
       <div class="pLogin">
         <input 
@@ -55,8 +55,9 @@
          v-model="phone"
          v-validate="'required|mobile'"
          name="phone"
+         maxlength="11"
         />
-        <p class="phone" v-show=" errors.has('phone')">{{ errors.first('phone') }}</p>
+        <!-- <p class="phone" v-show=" errors.has('phone')">{{ errors.first('phone') }}</p> -->
         <div class="yzlogin">
           <input 
             class="dxyanzheng"
@@ -67,23 +68,71 @@
             name="code"
           />
           <p class="code" v-show=" errors.has('code')">{{errors.first('code')}}</p>
-          <button class="lo">获取验证码</button>
+          <button class="lo" @click="ismm=!ismm">获取验证码</button>
+          <p class="phone" v-show="ismm">{{phone1}}</p>
         </div>
         <div class="yzlogin">
           <input class="pro" type="text" placeholder="遇到问题？"/>
-          <button class="mima lo" @click="go(0)">使用密码验证登录</button>
+          <button class="mima lo" @click="gotel">使用密码验证登录</button>
         </div>
         <div class="login">登录</div>
         <div class="back_btn" @click="show">其他登录方式 ></div>
       </div>
     </div>
+    <!-- 手机号登录界面2 -->
+    <div class="emailLogin" v-show="!isShowTel&&isShow===false">
+        <img class="image" src="//yanxuan.nosdn.127.net/bd139d2c42205f749cd4ab78fa3d6c60.png">
+        <div class="pLogin">
+          <input class="tel"
+            type="text"
+            placeholder="请输入手机号"
+            v-model="phone"
+            v-validate="'required|mobile'"
+            name="phone"
+          />
+          <p class="phone" v-show=" errors.has('phone')">{{ errors.first('phone') }}</p>
+          <div class="yzlogin">
+            <input 
+              class="dxyanzheng"
+              type="text"
+              placeholder="请输入密码"
+              v-model="code"
+              v-validate="{ required: true, regex: /^\d{6}$/ }"
+              name="code"
+            />
+            <p class="code" v-show=" errors.has('code')">{{errors.first('code')}}</p>
+          </div>
+          <div class="yzlogin">
+            <input class="pro" type="text" placeholder="忘记密码"/>
+            <button class="mima lo mimayz" @click="goPhone">短信快捷登陆</button>
+          </div>
+          <div class="login">登录</div>
+          <div class="back_btn" @click="show">其他登录方式 ></div>
+        </div>
+      </div> 
+
     <!-- 邮箱登录界面 -->
     <div class="emailLogin" v-show="toggle==0&&!isShow">
       <img class="image" src="//yanxuan.nosdn.127.net/bd139d2c42205f749cd4ab78fa3d6c60.png">
       <div class="pLogin">
-        <input class="tel" type="text" placeholder="邮箱帐号" />
+        <input class="tel"
+          type="text"
+          placeholder="邮箱帐号"
+          v-model="youxiang"
+          v-validate="'required|youxiang'"
+          name="邮箱"
+        />
+        <p class="phone" v-show=" errors.has('邮箱')">{{ errors.first('邮箱') }}</p>
         <div class="yzlogin">
-          <input class="dxyanzheng" type="text" placeholder="密码"/>
+          <input 
+           class="dxyanzheng"
+           type="text"
+           placeholder="密码"
+           v-model="mima"
+           v-validate="{ required: true, regex: /^\d{6}$/ }"
+           name="mima"
+        />
+        <p class="code" v-show=" errors.has('mima')">{{errors.first('mima')}}</p>
         </div>
         <div class="yzlogin">
           <input class="pro" type="text" placeholder="注册账号"/>
@@ -96,12 +145,12 @@
     <div class="footer">
       <router-view></router-view>
     </div>
-    
   </section>
 </template>
 
 <script type="text/ecmascript-6">
 import { constants } from 'crypto';
+import { watch } from 'fs';
   export default {
     data(){
       return {
@@ -109,6 +158,19 @@ import { constants } from 'crypto';
         toggle:0, //1 手机号登录界面显示  0 邮箱登录界面显示
         phone:'',//手机号
         code:'',//短信验证码
+        youxiang:'',
+        isShowTel:true,
+        mima:'',
+        ismm:false
+      }
+    },
+    computed:{
+      phone1(){
+        if(!this.phone){
+          return "请输入手机号"
+        }
+        const  reg =  /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/.test(this.phone)
+        return reg?'':"格式不正确"
       }
     },
     methods: {
@@ -120,6 +182,14 @@ import { constants } from 'crypto';
           this.isShow=false
           // console.log(num, 'xxxxxxx')
           this.toggle=num
+      },
+      gotel(){
+        this.isShow=false
+        this.isShowTel = false
+      },
+      goPhone(){
+        this.isShow=false
+        this.isShowTel = true
       },
       show(){
         this.isShow=true
