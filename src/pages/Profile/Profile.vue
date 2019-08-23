@@ -118,7 +118,7 @@ import { constants } from 'crypto';
       },
       go(num){
           this.isShow=false
-          console.log(num, 'xxxxxxx')
+          // console.log(num, 'xxxxxxx')
           this.toggle=num
       },
       show(){
