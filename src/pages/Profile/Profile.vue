@@ -22,7 +22,7 @@
             <i class="iconfont icon-shouji101" ></i>
             <p>手机号快捷登录</p>
           </div>
-           <div class="youxiang" @click="go(2)">
+           <div class="youxiang" @click="go(0)">
             <i class="iconfont icon-duanxin" ></i>
             <p>邮箱帐号登录</p>
           </div>
@@ -45,24 +45,40 @@
         </div>
     </div>
     <!--手机号登录界面 -->
-    <div class="phoneLogin" v-show="toggle===1&&isShow===false">
+    <div class="phoneLogin" v-show="toggle==1&&!isShow">
       <img class="image" src="//yanxuan.nosdn.127.net/bd139d2c42205f749cd4ab78fa3d6c60.png">
       <div class="pLogin">
-        <input class="tel" type="text" placeholder="请输入手机号" />
+        <input 
+         class="tel"
+         type="tel"
+         placeholder="请输入手机号"
+         v-model="phone"
+         v-validate="'required|mobile'"
+         name="phone"
+        />
+        <p class="phone" v-show=" errors.has('phone')">{{ errors.first('phone') }}</p>
         <div class="yzlogin">
-          <input class="dxyanzheng" type="text" placeholder="请输入短信验证码"/>
+          <input 
+            class="dxyanzheng"
+            type="text"
+            placeholder="请输入短信验证码"
+            v-model="code"
+            v-validate="{ required: true, regex: /^\d{6}$/ }"
+            name="code"
+          />
+          <p class="code" v-show=" errors.has('code')">{{errors.first('code')}}</p>
           <button class="lo">获取验证码</button>
         </div>
         <div class="yzlogin">
           <input class="pro" type="text" placeholder="遇到问题？"/>
-          <button class="mima lo">使用密码验证登录</button>
+          <button class="mima lo" @click="go(0)">使用密码验证登录</button>
         </div>
         <div class="login">登录</div>
         <div class="back_btn" @click="show">其他登录方式 ></div>
       </div>
     </div>
     <!-- 邮箱登录界面 -->
-    <div class="emailLogin" v-show="toggle===2&&isShow===false">
+    <div class="emailLogin" v-show="toggle==0&&!isShow">
       <img class="image" src="//yanxuan.nosdn.127.net/bd139d2c42205f749cd4ab78fa3d6c60.png">
       <div class="pLogin">
         <input class="tel" type="text" placeholder="邮箱帐号" />
@@ -89,7 +105,9 @@
     data(){
       return {
         isShow:true,
-        toggle:0 //1 手机号登录界面显示  2 邮箱登录界面显示
+        toggle:0, //1 手机号登录界面显示  0 邮箱登录界面显示
+        phone:'',//手机号
+        code:'',//短信验证码
       }
     },
     methods: {
@@ -102,7 +120,6 @@
       },
       show(){
         this.isShow=true
-        this.toggle=0
       }
     }
   }
@@ -233,31 +250,46 @@
           margin-top px2rem(20px)
         &.pro
           margin-top px2rem(20px)
+      .phone
+        color:red
+        font-size:px2rem(26px)
+        width px2rem(660px)
+        height px2rem(40px)
+        line-height px2rem(40px)
+        margin 0 auto
       .yzlogin
+        position relative
+        .code
+          color:red
+          font-size:px2rem(26px)
+          width px2rem(660px)
+          height px2rem(40px)
+          line-height px2rem(40px)
+          margin 0 auto
         .lo
           position: absolute
           right: px2rem(50px)
-          top: px2rem(435px)
+          top: px2rem(40px)
           width: px2rem(168px)
           height: px2rem(50px)
           font-size: px2rem(30px)
           color #333
         .mima
-          top: px2rem(525px)
-          right: px2rem(45px)
+          top: px2rem(45px)
+          right: px2rem(37px)
           width: px2rem(258px)
           background: transparent
           outline:none
           border 0
         .mimayz
           color #7f7f7f
-          margin-top px2rem(30px)
+          // margin-top px2rem(-10px)
       .login
         width px2rem(660px)
         height px2rem(92px)
         background #DD1A21
         border-radius px2rem(5px)
-        margin 10px auto 
+        margin 25px auto 
         text-align center
         line-height px2rem(92px)
         font-size px2rem(30px)
